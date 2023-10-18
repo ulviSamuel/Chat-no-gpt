@@ -20,6 +20,7 @@ public class GestoreUtente extends Thread
 	private ServerOutputListener  serverOutputListener;
 	private Client                client;
 	private Config                config;
+	private GestoreListaUtenti    gestoreListaUtenti;
 	
 	//---------------------------------------------------------------------------------------------
 	
@@ -27,10 +28,13 @@ public class GestoreUtente extends Thread
 	{
 		this.serverOutputListener = serverOutputListener;
 		this.cso                  = cso;
+		gestoreListaUtenti        = new GestoreListaUtenti();
 		out                       = null;
 		in                        = null;
 		config                    = Config.instance();
 		client                    = new Client("User" + config.getnUser(), cso);
+		config.addClient(client);
+		gestoreListaUtenti.ordinaListaUtenti();
 	}
 	
 	//---------------------------------------------------------------------------------------------
@@ -88,6 +92,7 @@ public class GestoreUtente extends Thread
 		if(commands.length == 2)
 		{
 			serverOutputListener.mostraStringa(new ServerEvent("\n" + client.getNomeUtente() + " si logga con il nome " + commands[1]));
+			System.out.println(gestoreListaUtenti.verificaDisponibilitàNome(commands[1]));
 			client.setNomeUtente(commands[1]);
 		}
 		else

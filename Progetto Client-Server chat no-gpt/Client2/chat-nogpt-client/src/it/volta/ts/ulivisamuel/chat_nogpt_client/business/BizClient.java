@@ -1,6 +1,8 @@
 package it.volta.ts.ulivisamuel.chat_nogpt_client.business;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -18,6 +20,7 @@ public class BizClient
     private ConsoleInputListener  inputListener;
     private ConsoleOutputListener consoleOutputListener;
     private Config                config;
+    private BufferedReader        in;
     
     //---------------------------------------------------------------------------------------------
 
@@ -32,17 +35,26 @@ public class BizClient
     
     //---------------------------------------------------------------------------------------------
     
-    public void connettiServer()
+    public void connettiServer(String nomeUtente)
     {
     	try {
             client = new Socket(config.getIpServer(), config.getPortaServer());
-            out = new PrintWriter(client.getOutputStream(),true);
+            out    = new PrintWriter(client.getOutputStream(),true);
+            in     = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            eseguiLogin(nomeUtente);
             mandaMessaggioContinuo();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    //---------------------------------------------------------------------------------------------
+    
+    public void eseguiLogin(String nomeUtente)
+    {
+    	out.println(ProtocolCommands.LOGIN.toString() + " " + nomeUtente);
     }
     
     //---------------------------------------------------------------------------------------------
@@ -53,7 +65,7 @@ public class BizClient
         while(!mess.equals(ProtocolCommands.EXIT.toString()))
         {
         	mess = (String) inputListener.leggiStringa().getSource();
-        	out.println(mess);
+        	out.println(ProtocolCommands.SEND + " " + mess);
         }
         consoleOutputListener.mostraStringa(new ClientEvent("\nConnessione interrotta"));
     }
