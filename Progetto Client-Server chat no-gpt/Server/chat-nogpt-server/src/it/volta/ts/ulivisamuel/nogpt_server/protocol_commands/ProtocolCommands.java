@@ -6,5 +6,6 @@ public enum ProtocolCommands
 	LOGIN,
 	SEND,
 	TO,
-	ERROR
+	LOGIN_ERROR,
+	COMMAND_ERROR
 }

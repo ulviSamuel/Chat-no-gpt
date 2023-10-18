@@ -80,7 +80,7 @@ public class GestoreUtente extends Thread
 			break;
 
 		default:
-			out.println(ProtocolCommands.ERROR.toString());
+			out.println(ProtocolCommands.COMMAND_ERROR.toString());
 			break;
 		}
 	}
@@ -92,10 +92,13 @@ public class GestoreUtente extends Thread
 		if(commands.length == 2)
 		{
 			serverOutputListener.mostraStringa(new ServerEvent("\n" + client.getNomeUtente() + " si logga con il nome " + commands[1]));
-			System.out.println(gestoreListaUtenti.verificaDisponibilitàNome(commands[1]));
-			client.setNomeUtente(commands[1]);
+			boolean res = gestoreListaUtenti.verificaDisponibilitàNome(commands[1]);
+			if(res)
+				client.setNomeUtente(commands[1]);
+			else
+				out.println(ProtocolCommands.LOGIN_ERROR.toString());
 		}
 		else
-			out.println(ProtocolCommands.ERROR.toString());
+			out.println(ProtocolCommands.LOGIN_ERROR.toString());
 	}
 }
