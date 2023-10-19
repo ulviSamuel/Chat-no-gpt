@@ -5,4 +5,5 @@ import java.util.EventListener;
 public interface ServerOutputListener extends EventListener 
 {
 	public void mostraStringa(ServerEvent event);
+	public void mostraErrore(ServerEvent event);
 }

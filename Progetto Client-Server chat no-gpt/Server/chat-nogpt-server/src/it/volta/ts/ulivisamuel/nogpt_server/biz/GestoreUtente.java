@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 import it.volta.ts.ulivisamuel.nogpt_server.Config;
 import it.volta.ts.ulivisamuel.nogpt_server.bean.Client;
@@ -59,8 +60,14 @@ public class GestoreUtente extends Thread
 				decidiAzione(s);
 			}
 			serverOutputListener.mostraStringa(new ServerEvent("\nCollegamento interrotto con " + client.getNomeUtente()));
+		} catch (SocketException e) {
+		    if (e.getMessage().equals("Connection reset")) {
+		    	serverOutputListener.mostraErrore(new ServerEvent("\n" + client.getNomeUtente() + " si è sloggato"));
+		    } else {
+		        e.printStackTrace();
+		    }
 		} catch (IOException e) {
-			e.printStackTrace();
+		    e.printStackTrace();
 		}
 	}
 	
@@ -94,7 +101,10 @@ public class GestoreUtente extends Thread
 			serverOutputListener.mostraStringa(new ServerEvent("\n" + client.getNomeUtente() + " si logga con il nome " + commands[1]));
 			boolean res = gestoreListaUtenti.verificaDisponibilitàNome(commands[1]);
 			if(res)
+			{
 				client.setNomeUtente(commands[1]);
+				out.println(ProtocolCommands.LOGGED.toString());
+			}
 			else
 				out.println(ProtocolCommands.LOGIN_ERROR.toString());
 		}

@@ -45,12 +45,13 @@ public class BizClient
             client = new Socket(config.getIpServer(), config.getPortaServer());
             out    = new PrintWriter(client.getOutputStream(),true);
             in     = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            bizOutputText.setOut(out);
+            bizOutputText.setInputListener(inputListener);
+            bizOutputText.setConsoleOutputListener(consoleOutputListener);
+            bizInputText.setConsoleOutputListener(consoleOutputListener);
+            bizInputText.setIn(in);
             bizInputText.start();
             bizOutputText.start();
-            eseguiLogin(nomeUtente);
-            mandaMessaggioContinuo();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

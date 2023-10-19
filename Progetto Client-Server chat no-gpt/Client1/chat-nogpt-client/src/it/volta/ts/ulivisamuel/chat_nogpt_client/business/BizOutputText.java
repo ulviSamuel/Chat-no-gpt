@@ -1,7 +1,9 @@
 package it.volta.ts.ulivisamuel.chat_nogpt_client.business;
 
 import java.io.PrintWriter;
+import java.util.concurrent.Semaphore;
 
+import it.volta.ts.ulivisamuel.chat_nogpt_client.Config;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ClientEvent;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ConsoleInputListener;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ConsoleOutputListener;
@@ -12,6 +14,7 @@ public class BizOutputText extends Thread
 	private PrintWriter           out;
     private ConsoleInputListener  inputListener;
     private ConsoleOutputListener consoleOutputListener;
+    private Config                config;
     
     //---------------------------------------------------------------------------------------------
     
@@ -20,6 +23,7 @@ public class BizOutputText extends Thread
     	out                   = null;
     	inputListener         = null;
     	consoleOutputListener = null;
+    	config                = Config.instance();
     }
     
     //---------------------------------------------------------------------------------------------
@@ -43,20 +47,19 @@ public class BizOutputText extends Thread
 
 	public void run()
     {
-    	eseguiLogin
+    	eseguiLogin();
     }
 	
 	//---------------------------------------------------------------------------------------------
     
-    private void eseguiLogin(String nomeUtente)
+    public void eseguiLogin()
     {
-    	inputListener.leggiStringa()
-    	out.println(ProtocolCommands.LOGIN.toString() + " " + nomeUtente);
+    	out.println(ProtocolCommands.LOGIN.toString() + " " + config.getNomeUtente());
     }
     
     //---------------------------------------------------------------------------------------------
 
-    private void mandaMessaggioContinuo() 
+    public void mandaMessaggioContinuo() 
     {
     	String mess = "";
         while(!mess.equals(ProtocolCommands.EXIT.toString()))

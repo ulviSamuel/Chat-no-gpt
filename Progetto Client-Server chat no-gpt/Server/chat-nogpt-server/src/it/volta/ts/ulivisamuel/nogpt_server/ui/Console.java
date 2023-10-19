@@ -29,4 +29,12 @@ public class Console implements ServerOutputListener
 	{
 		System.out.println(event.getSource());
 	}
+	
+	//---------------------------------------------------------------------------------------------
+
+	@Override
+	public void mostraErrore(ServerEvent event) 
+	{
+		System.err.println(event.getSource());
+	}
 }

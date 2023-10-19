@@ -5,5 +5,7 @@ public enum ProtocolCommands
 	EXIT,
 	LOGIN,
 	SEND,
-	TO
+	TO,
+	CONNECTION_CLOSED,
+	LOGGED
 }

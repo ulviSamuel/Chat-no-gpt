@@ -2,6 +2,7 @@ package it.volta.ts.ulivisamuel.chat_nogpt_client.ui;
 
 import java.util.Scanner;
 
+import it.volta.ts.ulivisamuel.chat_nogpt_client.Config;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.business.BizClient;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.business.BizControlli;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ClientEvent;
@@ -14,6 +15,7 @@ public class Console implements ConsoleInputListener, ConsoleOutputListener
 	private BizClient    bizClient;
 	private BizControlli bizControlli;
 	private Scanner      scanner;
+	private Config       config;
 	
 	//---------------------------------------------------------------------------------------------
 	
@@ -21,6 +23,7 @@ public class Console implements ConsoleInputListener, ConsoleOutputListener
 	{
 		bizClient    = new BizClient(this, this);
 		bizControlli = new BizControlli();
+		config       = Config.instance();
 	}
 	
 	//---------------------------------------------------------------------------------------------
@@ -29,7 +32,6 @@ public class Console implements ConsoleInputListener, ConsoleOutputListener
 	{
 		scanner = new Scanner(System.in);
 		insDatiSocket();
-		scanner.close();
 	}
 	
 	//---------------------------------------------------------------------------------------------
@@ -49,7 +51,8 @@ public class Console implements ConsoleInputListener, ConsoleOutputListener
 				if(bizControlli.controllaNomeUtente(nomeUtente))
 				{
 					continua = false;
-					bizClient.connettiServer(nomeUtente);
+					config.setNomeUtente(nomeUtente);
+					bizClient.connettiServer();
 				}
 				else
 					System.out.println("\nNome utente non accettato");
@@ -71,5 +74,13 @@ public class Console implements ConsoleInputListener, ConsoleOutputListener
 	public void mostraStringa(ClientEvent clientEvent) 
 	{
 		System.out.println(clientEvent.getSource());
+	}
+	
+	//---------------------------------------------------------------------------------------------
+
+	@Override
+	public void closeScanner() 
+	{
+		scanner.close();
 	}
 }

@@ -5,6 +5,7 @@ public class Config
 	private final static Config instance    = new Config();
 	private              String ipServer    = "127.0.0.1";
 	private              int    portaServer = 3333;
+	private              String nomeUtente  = "";
 	
 	//---------------------------------------------------------------------------------------------
 	
@@ -24,6 +25,11 @@ public class Config
 	{
 		this.ipServer = ipServer;
 	}
+	
+	public String getNomeUtente() 
+	{
+		return nomeUtente;
+	}
 
 	
 	
@@ -35,5 +41,10 @@ public class Config
 	public void setPortaServer(int portaServer) 
 	{
 		this.portaServer = portaServer;
+	}
+
+	public void setNomeUtente(String nomeUtente) 
+	{
+		this.nomeUtente = nomeUtente;
 	}
 }
