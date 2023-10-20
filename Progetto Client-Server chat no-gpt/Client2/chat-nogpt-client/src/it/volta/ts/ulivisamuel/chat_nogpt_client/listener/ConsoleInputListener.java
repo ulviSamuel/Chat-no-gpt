@@ -5,4 +5,6 @@ import java.util.EventListener;
 public interface ConsoleInputListener extends EventListener
 {
 	public ClientEvent leggiStringa();
+	public void        closeScanner();
+	public void        insDatiSocket();
 }

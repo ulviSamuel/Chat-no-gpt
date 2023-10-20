@@ -62,6 +62,7 @@ public class GestoreUtente extends Thread
 			serverOutputListener.mostraStringa(new ServerEvent("\nCollegamento interrotto con " + client.getNomeUtente()));
 		} catch (SocketException e) {
 		    if (e.getMessage().equals("Connection reset")) {
+		    	gestoreListaUtenti.rimuoviClient(client);
 		    	serverOutputListener.mostraErrore(new ServerEvent("\n" + client.getNomeUtente() + " si è sloggato"));
 		    } else {
 		        e.printStackTrace();
@@ -98,17 +99,27 @@ public class GestoreUtente extends Thread
 	{
 		if(commands.length == 2)
 		{
-			serverOutputListener.mostraStringa(new ServerEvent("\n" + client.getNomeUtente() + " si logga con il nome " + commands[1]));
+			serverOutputListener.mostraStringa(new ServerEvent("\n" + client.getNomeUtente() + " vuole loggarsi con il nome " + commands[1]));
 			boolean res = gestoreListaUtenti.verificaDisponibilitàNome(commands[1]);
 			if(res)
 			{
+				serverOutputListener.mostraStringa(new ServerEvent("\nNome utente non registrato, " + client.getNomeUtente() + " si logga con il nome " + commands[1]));
 				client.setNomeUtente(commands[1]);
 				out.println(ProtocolCommands.LOGGED.toString());
 			}
 			else
+			{
+				serverOutputListener.mostraStringa(new ServerEvent("\nNome utente già registrato, chiudo la connessione con un errore di login..."));
+				gestoreListaUtenti.rimuoviClient(client);
 				out.println(ProtocolCommands.LOGIN_ERROR.toString());
+				try {cso.close();} catch (IOException e) {}
+				Thread.interrupted();
+			}
 		}
 		else
+		{
+			gestoreListaUtenti.rimuoviClient(client);
 			out.println(ProtocolCommands.LOGIN_ERROR.toString());
+		}
 	}
 }

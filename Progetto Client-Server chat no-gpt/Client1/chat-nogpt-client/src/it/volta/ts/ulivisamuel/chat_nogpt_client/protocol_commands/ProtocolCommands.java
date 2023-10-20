@@ -7,5 +7,6 @@ public enum ProtocolCommands
 	SEND,
 	TO,
 	CONNECTION_CLOSED,
-	LOGGED
+	LOGGED,
+	LOGIN_ERROR
 }

@@ -49,9 +49,15 @@ public class BizClient
             bizOutputText.setInputListener(inputListener);
             bizOutputText.setConsoleOutputListener(consoleOutputListener);
             bizInputText.setConsoleOutputListener(consoleOutputListener);
+            bizInputText.setConsoleInputListener(inputListener);
             bizInputText.setIn(in);
-            bizInputText.start();
-            bizOutputText.start();
+            bizInputText.setBizOutputText(bizOutputText);
+            if(!bizInputText.isAlive())
+            	bizInputText.start();
+            if(!bizOutputText.isAlive())
+            	bizOutputText.start();
+            else
+            	bizOutputText.setLockThread(false);
         } catch (IOException e) {
             e.printStackTrace();
         }

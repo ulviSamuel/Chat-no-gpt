@@ -36,7 +36,7 @@ public class Console implements ConsoleInputListener, ConsoleOutputListener
 	
 	//---------------------------------------------------------------------------------------------
 	
-	private void insDatiSocket()
+	public void insDatiSocket()
 	{
 		boolean continua = true;
 		while(continua)
@@ -75,6 +75,15 @@ public class Console implements ConsoleInputListener, ConsoleOutputListener
 	{
 		System.out.println(clientEvent.getSource());
 	}
+	
+	//---------------------------------------------------------------------------------------------
+
+	@Override
+	public void mostraErrore(ClientEvent clientEvent) 
+	{
+		System.err.println(clientEvent.getSource());
+	}
+	
 	
 	//---------------------------------------------------------------------------------------------
 

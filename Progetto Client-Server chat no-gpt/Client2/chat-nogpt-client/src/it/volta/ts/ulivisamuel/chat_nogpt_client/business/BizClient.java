@@ -20,6 +20,8 @@ public class BizClient
     private ConsoleInputListener  inputListener;
     private ConsoleOutputListener consoleOutputListener;
     private Config                config;
+    private BizInputText          bizInputText;
+    private BizOutputText         bizOutputText;
     private BufferedReader        in;
     
     //---------------------------------------------------------------------------------------------
@@ -29,44 +31,35 @@ public class BizClient
     	    config                     = Config.instance();
             client                     = null;
             out                        = null;
+            bizInputText               = new BizInputText();
+            bizOutputText              = new BizOutputText();
             this.inputListener         = inputListener;
             this.consoleOutputListener = consoleOutputListener;
     }
     
     //---------------------------------------------------------------------------------------------
     
-    public void connettiServer(String nomeUtente)
+    public void connettiServer()
     {
     	try {
             client = new Socket(config.getIpServer(), config.getPortaServer());
             out    = new PrintWriter(client.getOutputStream(),true);
             in     = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            eseguiLogin(nomeUtente);
-            mandaMessaggioContinuo();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+            bizOutputText.setOut(out);
+            bizOutputText.setInputListener(inputListener);
+            bizOutputText.setConsoleOutputListener(consoleOutputListener);
+            bizInputText.setConsoleOutputListener(consoleOutputListener);
+            bizInputText.setConsoleInputListener(inputListener);
+            bizInputText.setIn(in);
+            bizInputText.setBizOutputText(bizOutputText);
+            if(!bizInputText.isAlive())
+            	bizInputText.start();
+            if(!bizOutputText.isAlive())
+            	bizOutputText.start();
+            else
+            	bizOutputText.setLockThread(false);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    
-    //---------------------------------------------------------------------------------------------
-    
-    public void eseguiLogin(String nomeUtente)
-    {
-    	out.println(ProtocolCommands.LOGIN.toString() + " " + nomeUtente);
-    }
-    
-    //---------------------------------------------------------------------------------------------
-
-    private void mandaMessaggioContinuo() 
-    {
-    	String mess = "";
-        while(!mess.equals(ProtocolCommands.EXIT.toString()))
-        {
-        	mess = (String) inputListener.leggiStringa().getSource();
-        	out.println(ProtocolCommands.SEND + " " + mess);
-        }
-        consoleOutputListener.mostraStringa(new ClientEvent("\nConnessione interrotta"));
     }
 }

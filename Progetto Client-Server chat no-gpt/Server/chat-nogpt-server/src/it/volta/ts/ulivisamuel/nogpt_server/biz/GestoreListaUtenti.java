@@ -44,4 +44,12 @@ public class GestoreListaUtenti
         else
         	return false;
 	}
+	
+	//---------------------------------------------------------------------------------------------
+	
+	public void rimuoviClient(Client client)
+	{
+		List<Client> clients = config.getClients();
+		clients.remove(client);
+	}
 }

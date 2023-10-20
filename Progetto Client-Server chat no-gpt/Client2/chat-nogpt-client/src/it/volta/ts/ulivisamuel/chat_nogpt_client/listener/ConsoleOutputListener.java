@@ -5,4 +5,5 @@ import java.util.EventListener;
 public interface ConsoleOutputListener extends EventListener
 {
 	public void mostraStringa(ClientEvent clientEvent);
+	public void mostraErrore(ClientEvent clientEvent);
 }
