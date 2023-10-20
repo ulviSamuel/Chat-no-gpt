@@ -142,7 +142,7 @@ public class GestoreUtente extends Thread
 		for(Client client : clients)
 		{
 			if(client != mittente)
-				client.getOut().println(ServerProtocolCommands.RECE.toString() + " " + message + " " + ServerProtocolCommands.FROM.toString() + " " + mittente.getNomeUtente() + " " + ServerProtocolCommands.FROM.toString());
+				client.getOut().println(ServerProtocolCommands.RECE.toString() + " " + message + " " + ServerProtocolCommands.FROM.toString() + " " + mittente.getNomeUtente() + " " + ServerProtocolCommands.FROM.toString() + " ");
 		}
 	}
 }

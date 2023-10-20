@@ -72,8 +72,11 @@ public class BizInputText extends Thread
 	
 	private void decidiAzione(String s)
 	{
-		String[] commands = s.split(" ");
-		ServerProtocolCommands protocolCommand = ServerProtocolCommands.valueOf(commands[0]);
+		String command                         = s.substring(0, 4);
+		String contenutoRicevuto               = "";
+		if(s.length() != 4)
+			contenutoRicevuto = s.substring(5, s.length());
+		ServerProtocolCommands protocolCommand = ServerProtocolCommands.valueOf(command);
 		switch (protocolCommand) {
 		case LOGG:
 			bizOutputText.setLoginEseguito(true);
@@ -82,6 +85,19 @@ public class BizInputText extends Thread
 		case LOGE:
 			consoleOutputListener.mostraErrore(new ClientEvent("\nNome utente già registrato, scegline un altro"));
 			consoleInputListener.insDatiSocket();
+		case RECE:
+			gestisciRicezione(contenutoRicevuto);
+			break;
+		default:
+			break;
 		}
+	}
+	
+	//---------------------------------------------------------------------------------------------
+	
+	private void gestisciRicezione(String contenutoRicevuto)
+	{
+		String[] partiRicevute = contenutoRicevuto.split(" FROM ");
+		consoleOutputListener.mostraStringa(new ClientEvent(partiRicevute[1] + ": " + partiRicevute[0]));
 	}
 }
