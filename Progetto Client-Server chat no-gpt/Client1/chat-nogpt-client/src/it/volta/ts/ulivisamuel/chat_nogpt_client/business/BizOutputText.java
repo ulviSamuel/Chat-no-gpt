@@ -96,10 +96,31 @@ public class BizOutputText extends Thread
     	String mess = "";
         while(!mess.equals(ClientProtocolCommands.EXIT.toString()))
         {
-        	consoleOutputListener.mostraStringa(new ClientEvent("\nModalità di messaggistica:\nPer inviare a tutti gli utenti scrivi semplicemente il emssaggio che vuoi inviare\nPer inviare il messaggio solo ad un utente specifico scrivi '@NomeUtente messaggio'"));
-        	mess = (String) inputListener.leggiStringa("\nInserisci messaggio da inviare").getSource();
-        	out.println(ClientProtocolCommands.SEND + " " + mess + " " + ClientProtocolCommands.BROA);
+        	consoleOutputListener.mostraStringa(new ClientEvent("\nModalità di messaggistica:\nPer inviare a tutti "
+        			                                          + "gli utenti scrivi semplicemente il emssaggio che vuoi"
+        			                                          + " inviare\nPer inviare il messaggio solo ad un utente "
+        			                                          + "specifico scrivi '@NomeUtente messaggio'. Per inviarlo"
+        			                                          + " a più utenti\nin privato concatena le @ come nell'esem"
+        			                                          + "pio es. '@Mario @Andrea @Giovanni messaggio'"));
+        	mess            = (String) inputListener.leggiStringa("\nInserisci messaggio da inviare").getSource();
+        	out.println(creaMessDaInviare(mess));
         }
         consoleOutputListener.mostraStringa(new ClientEvent("\nConnessione interrotta"));
+    }
+    
+    //---------------------------------------------------------------------------------------------
+    
+    private String creaMessDaInviare(String mess)
+    {
+    	String   messForm = ClientProtocolCommands.SEND + " ";
+    	if(!mess.substring(0, 1).equals("@"))
+    		messForm = messForm + mess + " " + ClientProtocolCommands.BROA;
+    	else
+    	{
+    		String[] campi = mess.split("@");
+    		if(campi.length)
+    		String nomi    = "";
+    		nomi = nomi + campi[0] + campi[1];
+    	}
     }
 }

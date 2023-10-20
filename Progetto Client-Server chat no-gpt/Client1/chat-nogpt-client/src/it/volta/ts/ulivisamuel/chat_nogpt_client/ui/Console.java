@@ -57,6 +57,8 @@ public class Console implements ConsoleInputListener, ConsoleOutputListener
 				else
 					System.out.println("\nNome utente non accettato");
 			}
+			else
+				continua = false;
 		}
 	}
 	
