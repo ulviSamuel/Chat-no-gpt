@@ -1,12 +1,11 @@
 package it.volta.ts.ulivisamuel.nogpt_server.protocol_commands;
 
-public enum ProtocolCommands
+public enum ClientProtocolCommands 
 {
 	EXIT,
-	LOGIN,
+	LOGI,
 	SEND,
-	TO,
-	LOGIN_ERROR,
-	COMMAND_ERROR,
-	LOGGED
+	TOEE,
+	EETO,
+	BROA,
 }

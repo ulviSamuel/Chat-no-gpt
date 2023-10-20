@@ -4,7 +4,7 @@ import java.util.EventListener;
 
 public interface ConsoleInputListener extends EventListener
 {
-	public ClientEvent leggiStringa();
+	public ClientEvent leggiStringa(String mess);
 	public void        closeScanner();
 	public void        insDatiSocket();
 }

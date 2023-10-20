@@ -63,9 +63,9 @@ public class Console implements ConsoleInputListener, ConsoleOutputListener
 	//---------------------------------------------------------------------------------------------
 
 	@Override
-	public ClientEvent leggiStringa() 
+	public ClientEvent leggiStringa(String mess) 
 	{
-		return new ClientEvent(Util.leggiString(scanner, "\nMessaggio da inviare", true, null));
+		return new ClientEvent(Util.leggiString(scanner, mess, true, null));
 	}
 	
 	//---------------------------------------------------------------------------------------------

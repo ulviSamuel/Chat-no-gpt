@@ -62,6 +62,8 @@ public class GestoreListaUtenti
 	{
 		if(nomeUtente.length() < 4 || nomeUtente.length() > 20)
 			return false;
+		if(nomeUtente.split(" ").length != 1)
+			return false;
 		return true;
 	}
 	

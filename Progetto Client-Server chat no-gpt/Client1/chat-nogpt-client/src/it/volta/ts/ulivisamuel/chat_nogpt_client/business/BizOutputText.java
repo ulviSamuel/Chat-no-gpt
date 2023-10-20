@@ -7,7 +7,8 @@ import it.volta.ts.ulivisamuel.chat_nogpt_client.Config;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ClientEvent;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ConsoleInputListener;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ConsoleOutputListener;
-import it.volta.ts.ulivisamuel.chat_nogpt_client.protocol_commands.ProtocolCommands;
+import it.volta.ts.ulivisamuel.chat_nogpt_client.protocol_commands.ClientProtocolCommands;
+import it.volta.ts.ulivisamuel.chat_nogpt_client.protocol_commands.ServerProtocolCommands;
 
 public class BizOutputText extends Thread
 {
@@ -71,7 +72,7 @@ public class BizOutputText extends Thread
     private void eseguiLogin()
     {
     	lockThread = true;
-    	out.println(ProtocolCommands.LOGIN.toString() + " " + config.getNomeUtente());
+    	out.println(ClientProtocolCommands.LOGI.toString() + " " + config.getNomeUtente());
     	lockThread();
     }
     
@@ -93,10 +94,11 @@ public class BizOutputText extends Thread
     {
     	lockThread = false;
     	String mess = "";
-        while(!mess.equals(ProtocolCommands.EXIT.toString()))
+        while(!mess.equals(ClientProtocolCommands.EXIT.toString()))
         {
-        	mess = (String) inputListener.leggiStringa().getSource();
-        	out.println(ProtocolCommands.SEND + " " + mess);
+        	consoleOutputListener.mostraStringa(new ClientEvent("\nModalità di messaggistica:\nPer inviare a tutti gli utenti scrivi semplicemente il emssaggio che vuoi inviare\nPer inviare il messaggio solo ad un utente specifico scrivi '@NomeUtente messaggio'"));
+        	mess = (String) inputListener.leggiStringa("\nInserisci messaggio da inviare").getSource();
+        	out.println(ClientProtocolCommands.SEND + " " + mess + " " + ClientProtocolCommands.BROA);
         }
         consoleOutputListener.mostraStringa(new ClientEvent("\nConnessione interrotta"));
     }

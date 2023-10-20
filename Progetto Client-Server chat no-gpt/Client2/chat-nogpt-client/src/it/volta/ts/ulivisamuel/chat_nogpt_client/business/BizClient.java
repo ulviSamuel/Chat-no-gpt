@@ -11,7 +11,7 @@ import it.volta.ts.ulivisamuel.chat_nogpt_client.Config;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ClientEvent;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ConsoleInputListener;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ConsoleOutputListener;
-import it.volta.ts.ulivisamuel.chat_nogpt_client.protocol_commands.ProtocolCommands;
+import it.volta.ts.ulivisamuel.chat_nogpt_client.protocol_commands.ServerProtocolCommands;
 
 public class BizClient
 {

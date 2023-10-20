@@ -6,7 +6,7 @@ import java.io.IOException;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ClientEvent;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ConsoleInputListener;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ConsoleOutputListener;
-import it.volta.ts.ulivisamuel.chat_nogpt_client.protocol_commands.ProtocolCommands;
+import it.volta.ts.ulivisamuel.chat_nogpt_client.protocol_commands.ServerProtocolCommands;
 
 public class BizInputText extends Thread
 {
@@ -58,7 +58,7 @@ public class BizInputText extends Thread
 	{
 		try {
 			String s = "";
-			while(!s.equals(ProtocolCommands.CONNECTION_CLOSED.toString())) {
+			while(!s.equals(ServerProtocolCommands.CONNECTION_CLOSED.toString())) {
 				s = in.readLine();
 				consoleOutputListener.mostraStringa(new ClientEvent(s));
 				decidiAzione(s);
@@ -73,13 +73,13 @@ public class BizInputText extends Thread
 	private void decidiAzione(String s)
 	{
 		String[] commands = s.split(" ");
-		ProtocolCommands protocolCommand = ProtocolCommands.valueOf(commands[0]);
+		ServerProtocolCommands protocolCommand = ServerProtocolCommands.valueOf(commands[0]);
 		switch (protocolCommand) {
-		case LOGGED:
+		case LOGG:
 			bizOutputText.setLoginEseguito(true);
 			bizOutputText.setLockThread(false);
 			break;
-		case LOGIN_ERROR:
+		case LOGE:
 			consoleOutputListener.mostraErrore(new ClientEvent("\nNome utente già registrato, scegline un altro"));
 			consoleInputListener.insDatiSocket();
 		}
