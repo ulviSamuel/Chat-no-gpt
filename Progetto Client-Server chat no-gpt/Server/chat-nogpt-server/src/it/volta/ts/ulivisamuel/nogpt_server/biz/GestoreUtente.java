@@ -99,7 +99,7 @@ public class GestoreUtente extends Thread
 		if(commands.length == 2)
 		{
 			serverOutputListener.mostraStringa(new ServerEvent("\n" + client.getNomeUtente() + " vuole loggarsi con il nome " + commands[1]));
-			boolean res = gestoreListaUtenti.verificaDisponibilitàNome(commands[1]);
+			boolean res = gestoreListaUtenti.accettazioneNome(commands[1]);
 			if(res)
 			{
 				serverOutputListener.mostraStringa(new ServerEvent("\nNome utente non registrato, " + client.getNomeUtente() + " si logga con il nome " + commands[1]));
@@ -108,17 +108,18 @@ public class GestoreUtente extends Thread
 			}
 			else
 			{
-				serverOutputListener.mostraStringa(new ServerEvent("\nNome utente già registrato, chiudo la connessione con un errore di login..."));
+				serverOutputListener.mostraStringa(new ServerEvent("\nNome utente già registrato/non accettato in quanto non risponde ai criteri per il nome utente, chiudo la connessione con un errore di login..."));
 				gestoreListaUtenti.rimuoviClient(client);
 				out.println(ProtocolCommands.LOGIN_ERROR.toString());
 				try {cso.close();} catch (IOException e) {}
 				Thread.interrupted();
 			}
-		}
-		else
-		{
+		} else {
+			serverOutputListener.mostraStringa(new ServerEvent("\nNome utente non accettato in quanto non risponde ai criteri per il nome utente, chiudo la connessione con un errore di login..."));
 			gestoreListaUtenti.rimuoviClient(client);
 			out.println(ProtocolCommands.LOGIN_ERROR.toString());
+			try {cso.close();} catch (IOException e) {}
+			Thread.interrupted();
 		}
 	}
 }

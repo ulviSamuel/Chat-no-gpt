@@ -35,7 +35,18 @@ public class GestoreListaUtenti
 	
 	//---------------------------------------------------------------------------------------------
 	
-	public boolean verificaDisponibilitàNome(String nomeUtente)
+	public boolean accettazioneNome(String nomeUtente)
+	{
+		if(!verificaDisponibilitàNome(nomeUtente))
+			return false;
+		if(!verificaCredenzialiNome(nomeUtente))
+			return false;
+		return true;
+	}
+	
+	//---------------------------------------------------------------------------------------------
+	
+	private boolean verificaDisponibilitàNome(String nomeUtente)
 	{
 		Comparator<Client> comparatore = Comparator.comparing(Client::getNomeUtente);
         int risultato = Collections.binarySearch(config.getClients(), new Client(nomeUtente, null), comparatore);
@@ -43,6 +54,15 @@ public class GestoreListaUtenti
         	return true;
         else
         	return false;
+	}
+	
+	//---------------------------------------------------------------------------------------------
+	
+	private boolean verificaCredenzialiNome(String nomeUtente)
+	{
+		if(nomeUtente.length() < 4 || nomeUtente.length() > 20)
+			return false;
+		return true;
 	}
 	
 	//---------------------------------------------------------------------------------------------
