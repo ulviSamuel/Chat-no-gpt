@@ -61,11 +61,10 @@ public class GestoreUtente extends Thread
 			}
 			serverOutputListener.mostraStringa(new ServerEvent("\nCollegamento interrotto con " + client.getNomeUtente()));
 		} catch (SocketException e) {
-		    if (e.getMessage().equals("Connection reset")) {
+		    if (e.getMessage().equals("Connection reset")) 
+		    {
 		    	gestoreListaUtenti.rimuoviClient(client);
 		    	serverOutputListener.mostraErrore(new ServerEvent("\n" + client.getNomeUtente() + " si è sloggato"));
-		    } else {
-		        e.printStackTrace();
 		    }
 		} catch (IOException e) {
 		    e.printStackTrace();
