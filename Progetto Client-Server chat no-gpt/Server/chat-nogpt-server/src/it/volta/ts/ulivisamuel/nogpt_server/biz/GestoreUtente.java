@@ -132,6 +132,17 @@ public class GestoreUtente extends Thread
 			message = requestParts.substring(0, requestParts.length() - 5);
 			mandaMessBroadcast(message, client);
 		}
+		else
+		{
+			if(protocolCommand == ClientProtocolCommands.EETO)
+			{
+				String[] parti = message.split(ClientProtocolCommands.TOEE.toString());
+				if(parti.length > 1)
+				{
+					message        = parti[0];
+				}
+			}
+		}
 	}
 	
 	//---------------------------------------------------------------------------------------------
@@ -144,5 +155,12 @@ public class GestoreUtente extends Thread
 			if(client != mittente)
 				client.getOut().println(ServerProtocolCommands.RECE.toString() + " " + message + " " + ServerProtocolCommands.FROM.toString() + " " + mittente.getNomeUtente() + " " + ServerProtocolCommands.FROM.toString() + " ");
 		}
+	}
+	
+	//---------------------------------------------------------------------------------------------
+	
+	private void mandaMessNarrowcast()
+	{
+		
 	}
 }
