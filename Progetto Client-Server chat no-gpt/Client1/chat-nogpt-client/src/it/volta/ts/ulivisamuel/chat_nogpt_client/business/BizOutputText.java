@@ -102,7 +102,7 @@ public class BizOutputText extends Thread
         			                                          + "specifico scrivi '@NomeUtente messaggio'. Per inviarlo"
         			                                          + " a pi� utenti\nin privato concatena le @ come nell'esem"
         			                                          + "pio es. '@Mario @Andrea @Giovanni messaggio'"));
-        	mess            = (String) inputListener.leggiStringa("\nInserisci messaggio da inviare").getSource();
+        	mess            = (String) inputListener.leggiStringa("\nInserisci messaggio da inviare\n==> ").getSource();
         	out.println(creaMessDaInviare(mess));
         }
         consoleOutputListener.mostraStringa(new ClientEvent("\nConnessione interrotta"));

@@ -44,7 +44,7 @@ public class Console implements ConsoleInputListener, ConsoleOutputListener
 			String nomeUtente = Util.leggiString(scanner, "\nInserisci il tuo nome utente\nIl nome utente "
 					                                    + "deve essere lungo massimo 20 caratteri, lungo minimo"
 					                                    + " 4 caratteri e non deve contenere spazi (es. Mario543)\n"
-					                                    + "Oppure premi invio per uscire dal programma"
+					                                    + "Oppure premi invio per uscire dal programma\n==> "
 					                                    , false, null);
 			if(nomeUtente != null)
 			{
@@ -75,7 +75,7 @@ public class Console implements ConsoleInputListener, ConsoleOutputListener
 	@Override
 	public void mostraStringa(ClientEvent clientEvent) 
 	{
-		System.out.println(clientEvent.getSource());
+		System.out.print(clientEvent.getSource());
 	}
 	
 	//---------------------------------------------------------------------------------------------

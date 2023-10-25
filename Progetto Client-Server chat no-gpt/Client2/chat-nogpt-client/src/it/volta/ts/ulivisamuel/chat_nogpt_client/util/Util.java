@@ -56,11 +56,10 @@ public class Util
 	{
 		String valore = "";
 		
-		System.out.println(messaggio);
+		System.out.print(messaggio);
 		
 		while(valore.length() == 0)
 		{
-			System.out.print("==> ");
 			valore = scanner.nextLine().trim();
 			
 			if(valore.length() == 0 && !insObbligatorio)

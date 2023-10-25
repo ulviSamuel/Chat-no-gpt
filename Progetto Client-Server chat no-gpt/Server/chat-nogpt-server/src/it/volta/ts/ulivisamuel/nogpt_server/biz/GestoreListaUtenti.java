@@ -74,4 +74,16 @@ public class GestoreListaUtenti
 		List<Client> clients = config.getClients();
 		clients.remove(client);
 	}
+	
+	//---------------------------------------------------------------------------------------------
+	
+	public Client trovaPosizioneNomeUtente(String nomeUtente)
+	{
+		Comparator<Client> comparatore = Comparator.comparing(Client::getNomeUtente);
+        int risultato = Collections.binarySearch(config.getClients(), new Client(nomeUtente, null), comparatore);
+        if(risultato < 0)
+        	return null;
+        else
+        	return config.getClients().get(risultato);
+	}
 }

@@ -69,7 +69,7 @@ public class GestoreUtente extends Thread
 		    if (e.getMessage().equals("Connection reset")) 
 		    {
 		    	gestoreListaUtenti.rimuoviClient(client);
-		    	serverOutputListener.mostraErrore(new ServerEvent("\n" + client.getNomeUtente() + " si è sloggato"));
+		    	serverOutputListener.mostraErrore(new ServerEvent("\n" + client.getNomeUtente() + " si è sloggato senza seguire la procedura"));
 		    }
 		} catch (IOException e) {
 		    e.printStackTrace();
@@ -136,10 +136,13 @@ public class GestoreUtente extends Thread
 		{
 			if(protocolCommand == ClientProtocolCommands.EETO)
 			{
-				String[] parti = message.split(ClientProtocolCommands.TOEE.toString());
+				String[] parti = requestParts.split(ClientProtocolCommands.TOEE.toString());
 				if(parti.length > 1)
 				{
-					message        = parti[0];
+					String people;
+					message = parti[0].substring(0, parti[0].length() - 1);
+					people  = parti[1].substring(1, parti[1].length() - 5);
+					mandaMessNarrowcast(people, message, client);
 				}
 			}
 		}
@@ -159,8 +162,14 @@ public class GestoreUtente extends Thread
 	
 	//---------------------------------------------------------------------------------------------
 	
-	private void mandaMessNarrowcast()
+	private void mandaMessNarrowcast(String people, String message, Client mittente)
 	{
-		
+		String[] peopleSep = people.split(" ");
+		for(int idx = 0; idx < peopleSep.length; ++idx)
+		{
+			Client client = gestoreListaUtenti.trovaPosizioneNomeUtente(peopleSep[idx]);
+			if(client != null)
+				client.getOut().println(ServerProtocolCommands.RECE.toString() + " " + message + " " + ServerProtocolCommands.FROM.toString() + " " + mittente.getNomeUtente() + " " + ServerProtocolCommands.FROM.toString() + " ");
+		}
 	}
 }

@@ -96,10 +96,65 @@ public class BizOutputText extends Thread
     	String mess = "";
         while(!mess.equals(ClientProtocolCommands.EXIT.toString()))
         {
-        	consoleOutputListener.mostraStringa(new ClientEvent("\nModalità di messaggistica:\nPer inviare a tutti gli utenti scrivi semplicemente il emssaggio che vuoi inviare\nPer inviare il messaggio solo ad un utente specifico scrivi '@NomeUtente messaggio'"));
-        	mess = (String) inputListener.leggiStringa("\nInserisci messaggio da inviare").getSource();
-        	out.println(ClientProtocolCommands.SEND + " " + mess + " " + ClientProtocolCommands.BROA);
+        	consoleOutputListener.mostraStringa(new ClientEvent("\nModalitï¿½ di messaggistica:\nPer inviare a tutti "
+        			                                          + "gli utenti scrivi semplicemente il emssaggio che vuoi"
+        			                                          + " inviare\nPer inviare il messaggio solo ad un utente "
+        			                                          + "specifico scrivi '@NomeUtente messaggio'. Per inviarlo"
+        			                                          + " a piï¿½ utenti\nin privato concatena le @ come nell'esem"
+        			                                          + "pio es. '@Mario @Andrea @Giovanni messaggio'"));
+        	mess            = (String) inputListener.leggiStringa("\nInserisci messaggio da inviare\n==> ").getSource();
+        	out.println(creaMessDaInviare(mess));
         }
         consoleOutputListener.mostraStringa(new ClientEvent("\nConnessione interrotta"));
+    }
+    
+    //---------------------------------------------------------------------------------------------
+    
+    private String creaMessDaInviare(String mess)
+    {
+    	String   messForm = ClientProtocolCommands.SEND + " ";
+    	if(!mess.substring(0, 1).equals("@"))
+    		messForm = messForm + mess + " " + ClientProtocolCommands.BROA;
+    	else
+    	{
+    		String[] campi  = mess.split("@");
+    		String fromPart = "";
+    		for(int idx = 0; idx < campi.length; ++idx)
+    		{
+    			String[] campi2 = campi[idx].split(" ");
+    			if(campi2.length == 1)
+    			{
+    				if(idx != 0)
+    					fromPart = fromPart + " " + campi2[0];
+    				else
+    					fromPart = fromPart + campi2[0];
+    			}
+    			else
+    			{
+    				fromPart = fromPart + " " + campi2[0];
+    				messForm = messForm + ricavaMess(campi2) + " " 
+    			                        + ClientProtocolCommands.TOEE
+    						            +  fromPart + " " 
+    			                        + ClientProtocolCommands.EETO;
+    				break;
+    			}
+    		}
+    	}
+    	return messForm;
+    }
+    
+    //---------------------------------------------------------------------------------------------
+    
+    private String ricavaMess(String[] campi2)
+    {
+    	String mess = "";
+    	for(int idx = 1; idx < campi2.length; ++idx)
+    	{
+    		if(idx == 1)
+    			mess = mess + campi2[idx];
+    		else
+    			mess = mess + " " + campi2[idx];
+    	}
+    	return mess;
     }
 }

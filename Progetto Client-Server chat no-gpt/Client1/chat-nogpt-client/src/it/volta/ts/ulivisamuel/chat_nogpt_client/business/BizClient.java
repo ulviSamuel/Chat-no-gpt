@@ -59,7 +59,7 @@ public class BizClient
             else
             	bizOutputText.setLockThread(false);
         } catch (IOException e) {
-            e.printStackTrace();
+        	consoleOutputListener.mostraErrore(new ClientEvent("\nImpossibile connettersi al server"));
         }
     }
 }
