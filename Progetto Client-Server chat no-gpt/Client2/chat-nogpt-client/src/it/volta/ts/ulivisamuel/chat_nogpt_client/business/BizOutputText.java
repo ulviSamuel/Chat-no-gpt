@@ -1,14 +1,12 @@
 package it.volta.ts.ulivisamuel.chat_nogpt_client.business;
 
 import java.io.PrintWriter;
-import java.util.concurrent.Semaphore;
 
 import it.volta.ts.ulivisamuel.chat_nogpt_client.Config;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ClientEvent;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ConsoleInputListener;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.listener.ConsoleOutputListener;
 import it.volta.ts.ulivisamuel.chat_nogpt_client.protocol_commands.ClientProtocolCommands;
-import it.volta.ts.ulivisamuel.chat_nogpt_client.protocol_commands.ServerProtocolCommands;
 
 public class BizOutputText extends Thread
 {
@@ -92,17 +90,18 @@ public class BizOutputText extends Thread
 
     public void mandaMessaggioContinuo() 
     {
+    	consoleOutputListener.mostraStringa(new ClientEvent("\nUtente connesso\n"));
+    	consoleOutputListener.mostraStringa(new ClientEvent("\nModalit� di messaggistica:\nPer inviare a tutti "
+                + "gli utenti scrivi semplicemente il emssaggio che vuoi"
+                + " inviare\nPer inviare il messaggio solo ad un utente "
+                + "specifico scrivi '@NomeUtente messaggio'. Per inviarlo"
+                + " a pi� utenti\nin privato concatena le @ come nell'esem"
+                + "pio es. '@Mario @Andrea @Giovanni messaggio'\n\n"));
     	lockThread = false;
     	String mess = "";
         while(!mess.equals(ClientProtocolCommands.EXIT.toString()))
         {
-        	consoleOutputListener.mostraStringa(new ClientEvent("\nModalit� di messaggistica:\nPer inviare a tutti "
-        			                                          + "gli utenti scrivi semplicemente il emssaggio che vuoi"
-        			                                          + " inviare\nPer inviare il messaggio solo ad un utente "
-        			                                          + "specifico scrivi '@NomeUtente messaggio'. Per inviarlo"
-        			                                          + " a pi� utenti\nin privato concatena le @ come nell'esem"
-        			                                          + "pio es. '@Mario @Andrea @Giovanni messaggio'"));
-        	mess            = (String) inputListener.leggiStringa("\nInserisci messaggio da inviare\n==> ").getSource();
+        	mess            = (String) inputListener.leggiStringa("Tu: ").getSource();
         	out.println(creaMessDaInviare(mess));
         }
         consoleOutputListener.mostraStringa(new ClientEvent("\nConnessione interrotta"));

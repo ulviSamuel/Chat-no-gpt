@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.List;
 
 import it.volta.ts.ulivisamuel.nogpt_server.Config;
@@ -69,7 +68,7 @@ public class GestoreUtente extends Thread
 		    if (e.getMessage().equals("Connection reset")) 
 		    {
 		    	gestoreListaUtenti.rimuoviClient(client);
-		    	serverOutputListener.mostraErrore(new ServerEvent("\n" + client.getNomeUtente() + " si è sloggato senza seguire la procedura"));
+		    	serverOutputListener.mostraErrore(new ServerEvent("\n" + client.getNomeUtente() + " si è sloggato"));
 		    }
 		} catch (IOException e) {
 		    e.printStackTrace();
@@ -80,9 +79,20 @@ public class GestoreUtente extends Thread
 	
 	private void decidiAzione(String s)
 	{
-		String command      = s.substring(0, 4);
-		String requestParts = s.substring(5, s.length());
-		ClientProtocolCommands protocolCommand = ClientProtocolCommands.valueOf(command);
+		ClientProtocolCommands protocolCommand;
+		String                 requestParts = null;
+		String                 command;
+		if(s.length() >= 5)
+		{
+			command         = s.substring(0, 4);
+			requestParts    = s.substring(5, s.length());
+			protocolCommand = ClientProtocolCommands.valueOf(command);
+		}
+		else
+		{
+			out.println(ServerProtocolCommands.COME.toString());
+			return;
+		}
 		switch (protocolCommand) {
 		case LOGI:
 			gestisciLogin(requestParts);
@@ -124,28 +134,33 @@ public class GestoreUtente extends Thread
 	
 	private void gestisciInvio(String requestParts)
 	{
-		String                 message         = "";
-		String                 command         = requestParts.substring(requestParts.length() - 4, requestParts.length());
-		ClientProtocolCommands protocolCommand = ClientProtocolCommands.valueOf(command);
-		if(protocolCommand == ClientProtocolCommands.BROA)
+		if(requestParts != "")
 		{
-			message = requestParts.substring(0, requestParts.length() - 5);
-			mandaMessBroadcast(message, client);
-		}
-		else
-		{
-			if(protocolCommand == ClientProtocolCommands.EETO)
+			String                 message         = "";
+			String                 command         = requestParts.substring(requestParts.length() - 4, requestParts.length());
+			ClientProtocolCommands protocolCommand = ClientProtocolCommands.valueOf(command);
+			if(protocolCommand == ClientProtocolCommands.BROA)
 			{
-				String[] parti = requestParts.split(ClientProtocolCommands.TOEE.toString());
-				if(parti.length > 1)
+				message = requestParts.substring(0, requestParts.length() - 5);
+				mandaMessBroadcast(message, client);
+			}
+			else
+			{
+				if(protocolCommand == ClientProtocolCommands.EETO)
 				{
-					String people;
-					message = parti[0].substring(0, parti[0].length() - 1);
-					people  = parti[1].substring(1, parti[1].length() - 5);
-					mandaMessNarrowcast(people, message, client);
+					String[] parti = requestParts.split(ClientProtocolCommands.TOEE.toString());
+					if(parti.length > 1)
+					{
+						String people;
+						message = parti[0].substring(0, parti[0].length() - 1);
+						people  = parti[1].substring(1, parti[1].length() - 5);
+						mandaMessNarrowcast(people, message, client);
+					}
 				}
 			}
 		}
+		else
+			out.println(ServerProtocolCommands.COME.toString());
 	}
 	
 	//---------------------------------------------------------------------------------------------

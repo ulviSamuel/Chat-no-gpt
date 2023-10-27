@@ -63,7 +63,8 @@ public class BizInputText extends Thread
 				decidiAzione(s);
 			}
 		} catch (IOException e) {
-			consoleOutputListener.mostraErrore(new ClientEvent("\nIl server ha chiuso la connessione"));
+			consoleOutputListener.mostraErrore(new ClientEvent("\n\nIl server ha chiuso la connessione"));
+			System.exit(0);
 		}
 	}
 	
@@ -84,6 +85,7 @@ public class BizInputText extends Thread
 		case LOGE:
 			consoleOutputListener.mostraErrore(new ClientEvent("\nNome utente gi� registrato, scegline un altro"));
 			consoleInputListener.insDatiSocket();
+			break;
 		case RECE:
 			gestisciRicezione(contenutoRicevuto);
 			break;
@@ -97,6 +99,6 @@ public class BizInputText extends Thread
 	private void gestisciRicezione(String contenutoRicevuto)
 	{
 		String[] partiRicevute = contenutoRicevuto.split(" FROM ");
-		consoleOutputListener.mostraStringa(new ClientEvent("\n\n" + partiRicevute[1] + ": " + partiRicevute[0] + "\n\nInserisci messaggio da inviare\n==> "));
+		consoleOutputListener.mostraStringa(new ClientEvent("\n" + partiRicevute[1] + ": " + partiRicevute[0] + "\nTu: "));
 	}
 }
