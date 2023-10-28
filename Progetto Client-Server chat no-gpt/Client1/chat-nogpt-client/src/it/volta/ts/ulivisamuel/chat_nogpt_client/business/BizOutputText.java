@@ -16,6 +16,7 @@ public class BizOutputText extends Thread
     private Config                config;
     private boolean               lockThread;
     private boolean               loginEseguito;
+    private boolean               autoPing;
     
     //---------------------------------------------------------------------------------------------
     
@@ -27,6 +28,7 @@ public class BizOutputText extends Thread
     	config                = Config.instance();
     	lockThread            = true;
     	loginEseguito         = false;
+    	autoPing              = false;
     }
     
     //---------------------------------------------------------------------------------------------
@@ -92,16 +94,24 @@ public class BizOutputText extends Thread
     {
     	consoleOutputListener.mostraStringa(new ClientEvent("\nUtente connesso\n"));
     	consoleOutputListener.mostraStringa(new ClientEvent("\nModalitï¿½ di messaggistica:\nPer inviare a tutti "
-                + "gli utenti scrivi semplicemente il emssaggio che vuoi"
+                + "gli utenti scrivi semplicemente il messaggio che vuoi"
                 + " inviare\nPer inviare il messaggio solo ad un utente "
                 + "specifico scrivi '@NomeUtente messaggio'. Per inviarlo"
                 + " a piï¿½ utenti\nin privato concatena le @ come nell'esem"
-                + "pio es. '@Mario @Andrea @Giovanni messaggio'\n\n"));
+                + "pio es. '@Mario @Andrea @Giovanni messaggio'\n"
+                + "Il messaggio verrà inviato solamente ai destinatari registrati (messaggi con tag a nomi "
+                + "sconosciuti al server non verranno inviati)\n"
+                + "Per ottenere la lista degli utenti connessi scrivi LIST\n"
+                + "Per disconnetterti dal server e uscire dal programma scrivi 'EXIT'\n\n"));
     	lockThread = false;
     	String mess = "";
         while(!mess.equals(ClientProtocolCommands.EXIT.toString()))
         {
-        	mess            = (String) inputListener.leggiStringa("Tu: ").getSource();
+        	if(!autoPing)
+        		mess = (String) inputListener.leggiStringa("Tu: ").getSource();
+        	else
+        		mess = (String) inputListener.leggiStringa("").getSource();
+        	autoPing = false;
         	out.println(creaMessDaInviare(mess));
         }
         consoleOutputListener.mostraStringa(new ClientEvent("\nConnessione interrotta"));
@@ -136,6 +146,8 @@ public class BizOutputText extends Thread
     			                        + ClientProtocolCommands.TOEE
     						            +  fromPart + " " 
     			                        + ClientProtocolCommands.EETO;
+    				if(fromPart.contains(config.getNomeUtente()))
+    					autoPing = true;
     				break;
     			}
     		}

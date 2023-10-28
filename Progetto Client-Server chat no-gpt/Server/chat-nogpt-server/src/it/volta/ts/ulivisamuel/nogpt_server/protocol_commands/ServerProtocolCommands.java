@@ -6,5 +6,6 @@ public enum ServerProtocolCommands
 	COME,
 	LOGG,
 	RECE,
-	FROM
+	FROM,
+	LIST
 }

@@ -8,4 +8,5 @@ public enum ClientProtocolCommands
 	TOEE,
 	EETO,
 	BROA,
+	LIST
 }

@@ -105,6 +105,7 @@ public class BizOutputText extends Thread
         	out.println(creaMessDaInviare(mess));
         }
         consoleOutputListener.mostraStringa(new ClientEvent("\nConnessione interrotta"));
+        System.exit(0);
     }
     
     //---------------------------------------------------------------------------------------------

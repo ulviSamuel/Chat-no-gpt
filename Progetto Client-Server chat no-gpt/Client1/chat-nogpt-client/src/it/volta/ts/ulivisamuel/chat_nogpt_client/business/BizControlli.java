@@ -8,6 +8,8 @@ public class BizControlli
 			return false;
 		if(nome.split(" ").length != 1)
 			return false;
+		if(nome.contains("@"))
+			return false;
 		return true;
 	}
 }

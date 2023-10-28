@@ -20,17 +20,13 @@ public class GestoreListaUtenti
 	
 	//---------------------------------------------------------------------------------------------
 	
-	public void ordinaListaUtenti()
+	public String getStringListaUtenti()
 	{
+		String utenti        = "";
 		List<Client> clients = config.getClients();
-		Comparator<Client> comparator = new Comparator<Client>() 
-		{
-            @Override
-            public int compare(Client client1, Client client2) {
-                return client1.getNomeUtente().compareTo(client2.getNomeUtente());
-            }
-        };
-        Collections.sort(clients, comparator);
+		for(Client client : clients)
+			utenti = utenti + client.getNomeUtente() + " ";
+		return utenti;
 	}
 	
 	//---------------------------------------------------------------------------------------------
@@ -49,7 +45,9 @@ public class GestoreListaUtenti
 	private boolean verificaDisponibilitàNome(String nomeUtente)
 	{
 		Comparator<Client> comparatore = Comparator.comparing(Client::getNomeUtente);
-        int risultato = Collections.binarySearch(config.getClients(), new Client(nomeUtente, null), comparatore);
+		List<Client> utenti            = config.getClients();
+		Collections.sort(utenti, comparatore);
+        int risultato = Collections.binarySearch(utenti, new Client(nomeUtente, null), comparatore);
         if(risultato < 0)
         	return true;
         else
@@ -63,6 +61,8 @@ public class GestoreListaUtenti
 		if(nomeUtente.length() < 4 || nomeUtente.length() > 20)
 			return false;
 		if(nomeUtente.split(" ").length != 1)
+			return false;
+		if(nomeUtente.contains("@"))
 			return false;
 		return true;
 	}
@@ -80,7 +80,9 @@ public class GestoreListaUtenti
 	public Client trovaPosizioneNomeUtente(String nomeUtente)
 	{
 		Comparator<Client> comparatore = Comparator.comparing(Client::getNomeUtente);
-        int risultato = Collections.binarySearch(config.getClients(), new Client(nomeUtente, null), comparatore);
+		List<Client> utenti = config.getClients();
+		Collections.sort(utenti, comparatore);
+        int risultato = Collections.binarySearch(utenti, new Client(nomeUtente, null), comparatore);
         if(risultato < 0)
         	return null;
         else

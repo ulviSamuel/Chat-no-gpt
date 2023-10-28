@@ -7,5 +7,6 @@ public enum ServerProtocolCommands
 	LOGG,
 	RECE,
 	FROM,
-	CONNECTION_CLOSED
+	CONNECTION_CLOSED,
+	LIST
 }

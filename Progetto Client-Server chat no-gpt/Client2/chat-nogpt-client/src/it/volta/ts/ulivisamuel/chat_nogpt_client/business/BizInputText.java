@@ -63,7 +63,8 @@ public class BizInputText extends Thread
 				decidiAzione(s);
 			}
 		} catch (IOException e) {
-			consoleOutputListener.mostraErrore(new ClientEvent("\nIl server ha chiuso la connessione"));
+			consoleOutputListener.mostraErrore(new ClientEvent("\n\nIl server ha chiuso la connessione"));
+			System.exit(0);
 		}
 	}
 	

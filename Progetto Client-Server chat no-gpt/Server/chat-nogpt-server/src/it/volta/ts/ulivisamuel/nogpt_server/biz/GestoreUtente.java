@@ -37,7 +37,6 @@ public class GestoreUtente extends Thread
 		config                    = Config.instance();
 		client                    = null;
 		client                    = new Client("User" + config.getnUser(), cso);
-		gestoreListaUtenti.ordinaListaUtenti();
 	}
 	
 	//---------------------------------------------------------------------------------------------
@@ -100,6 +99,10 @@ public class GestoreUtente extends Thread
 			
 		case SEND:
 			gestisciInvio(requestParts);
+			break;
+			
+		case LIST:
+			mandaListaUtentiConn();
 			break;
 
 		default:
@@ -186,5 +189,13 @@ public class GestoreUtente extends Thread
 			if(client != null)
 				client.getOut().println(ServerProtocolCommands.RECE.toString() + " " + message + " " + ServerProtocolCommands.FROM.toString() + " " + mittente.getNomeUtente() + " " + ServerProtocolCommands.FROM.toString() + " ");
 		}
+	}
+	
+	//---------------------------------------------------------------------------------------------
+	
+	private void mandaListaUtentiConn()
+	{
+		String utenti = gestoreListaUtenti.getStringListaUtenti();
+		client.getOut().println(ServerProtocolCommands.LIST + " " + utenti);
 	}
 }

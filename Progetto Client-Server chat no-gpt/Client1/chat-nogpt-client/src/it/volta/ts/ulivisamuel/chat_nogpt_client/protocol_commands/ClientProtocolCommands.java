@@ -7,5 +7,6 @@ public enum ClientProtocolCommands
 	SEND,
 	TOEE,
 	EETO,
-	BROA
+	BROA,
+	LIST
 }
