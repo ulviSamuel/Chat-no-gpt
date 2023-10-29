@@ -89,6 +89,9 @@ public class BizInputText extends Thread
 		case RECE:
 			gestisciRicezione(contenutoRicevuto);
 			break;
+		case LIST:
+			gestisciRicListaUtenti(contenutoRicevuto);
+			break;
 		default:
 			break;
 		}
@@ -100,5 +103,12 @@ public class BizInputText extends Thread
 	{
 		String[] partiRicevute = contenutoRicevuto.split(" FROM ");
 		consoleOutputListener.mostraStringa(new ClientEvent("\n" + partiRicevute[1] + ": " + partiRicevute[0] + "\nTu: "));
+	}
+	
+	//---------------------------------------------------------------------------------------------
+	
+	private void gestisciRicListaUtenti(String mess)
+	{
+		consoleOutputListener.mostraStringa(new ClientEvent("\nLista utenti connessi aggiornata: " + mess + "\nTu: "));
 	}
 }

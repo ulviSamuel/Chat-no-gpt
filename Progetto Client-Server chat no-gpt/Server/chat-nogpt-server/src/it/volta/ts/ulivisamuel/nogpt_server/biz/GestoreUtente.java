@@ -68,6 +68,7 @@ public class GestoreUtente extends Thread
 		    {
 		    	gestoreListaUtenti.rimuoviClient(client);
 		    	serverOutputListener.mostraErrore(new ServerEvent("\n" + client.getNomeUtente() + " si è sloggato"));
+		    	mandaListaUtentiConn();
 		    }
 		} catch (IOException e) {
 		    e.printStackTrace();
@@ -79,7 +80,7 @@ public class GestoreUtente extends Thread
 	private void decidiAzione(String s)
 	{
 		ClientProtocolCommands protocolCommand;
-		String                 requestParts = null;
+		String                 requestParts    = null;
 		String                 command;
 		if(s.length() >= 5)
 		{
@@ -89,8 +90,16 @@ public class GestoreUtente extends Thread
 		}
 		else
 		{
-			out.println(ServerProtocolCommands.COME.toString());
-			return;
+			if(!s.equals(ClientProtocolCommands.LIST.toString()))
+			{
+				out.println(ServerProtocolCommands.COME.toString());
+				return;
+			}
+			else
+			{
+				command         = s.substring(0, 4);
+				protocolCommand = ClientProtocolCommands.valueOf(command);
+			}
 		}
 		switch (protocolCommand) {
 		case LOGI:
@@ -122,6 +131,7 @@ public class GestoreUtente extends Thread
 			serverOutputListener.mostraStringa(new ServerEvent("\nNome utente non registrato, " + client.getNomeUtente() + " si logga con il nome " + userName));
 			client.setNomeUtente(userName);
 			out.println(ServerProtocolCommands.LOGG.toString());
+			mandaListaUtentiConn();
 		}
 		else
 		{
@@ -195,7 +205,9 @@ public class GestoreUtente extends Thread
 	
 	private void mandaListaUtentiConn()
 	{
-		String utenti = gestoreListaUtenti.getStringListaUtenti();
-		client.getOut().println(ServerProtocolCommands.LIST + " " + utenti);
+		String utenti        = gestoreListaUtenti.getStringListaUtenti();
+		List<Client> clients = config.getClients();
+		for(Client client : clients)
+			client.getOut().println(ServerProtocolCommands.LIST + " " + utenti);
 	}
 }
