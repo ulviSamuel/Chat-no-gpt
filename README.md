@@ -114,4 +114,4 @@ The Git history records the main development sequence from October 18 through Oc
 
 ## License
 
-No license file or explicit license statement is included in the repository. Licensing terms require human review.
+This project is shared for educational and portfolio purposes. All rights reserved unless otherwise stated.
